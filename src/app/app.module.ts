@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { AppComponent } from './app.component';
+import { postsService } from './services/postsService';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,9 @@ import { AppComponent } from './app.component';
 	BrowserModule,
 	AngularFontAwesomeModule
   ],
-  providers: [],
+  providers: [
+	  postsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
