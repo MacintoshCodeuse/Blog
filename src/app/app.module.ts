@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { AppComponent } from './app.component';
+import { PostListComponent } from './post-list/post-list.component';
 import { postsService } from './services/postsService';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PostListComponent
   ],
   imports: [
 	BrowserModule,
