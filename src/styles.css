@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-body {
+main {
   font-family: verdana, sans-serif;
   padding: 2em;
 }
-li {
+
+li.card {
   margin: 0.5em 0 !important;
   padding: 1em !important;
 }
