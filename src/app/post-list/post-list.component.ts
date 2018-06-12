@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { postsService } from '../services/postsService';
 import { Subscription } from 'rxjs';
 import { Post } from '../models/Post.model';
+import { PostsService } from '../services/postsService';
 
 @Component({
 	selector: 'app-post-list',
@@ -13,7 +13,7 @@ export class PostListComponent implements OnInit {
 	posts: Post[];
 	postsSubscription : Subscription;
 
-	constructor(private postsService: postsService) {
+	constructor(private postsService: PostsService) {
 	}
 
 
