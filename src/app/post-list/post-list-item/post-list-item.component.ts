@@ -11,27 +11,27 @@ import { PostsService } from "../../services/postsService";
 // Article
 export class PostListItemComponent implements OnInit {
 	@Input() post: Post;
-	@Input() i: string;
+	@Input() index: number;
 
 	constructor(private postService: PostsService) {}
 
 	ngOnInit() {}
 
 	// Ajout d'un loveIts dans un article
-	onLove(index: number) {
+	onLove() {
 		// Utilisation de la fonction love de postService
-		this.postService.love(index);
+		this.postService.love(this.index);
 	}
 
 	// Supression d'un loveIts dans un article
-	onDontLove(index: number) {
+	onDontLove() {
 		// Utilisation de la fonction dontLove de postService
-		this.postService.dontLove(index);
+		this.postService.dontLove(this.index);
 	}
 
 	// Supression d'un article
-	onDelete(index: number) {
+	onDelete() {
 		// Utilisation de la fonction removePoste de postService
-		this.postService.removePost(index);
+		this.postService.removePost(this.index);
 	}
 }
