@@ -1,18 +1,6 @@
 <ul class="list-group">
-	<ul *ngFor="let post of posts">
-		<li class="card" [ngClass]="{ 'list-group-item': post.loveIts == 0,
-		                              'list-group-item-success': post.loveIts > 0,
-		                              'list-group-item-danger': post.loveIts < 0}">
-			<div class="card-body">
-				<div class="card-title d-flex align-items-center justify-content-between">
-					<h2>{{ post.title }}</h2>
-					<h6 class="text-muted font-italic">{{ posts.date | date: 'dd/MM/yyyy, hh:mm a' }}</h6>
-				</div>
-
-				<p class="card-text">{{ post.content }}</p>
-				<a class="btn btn-success">Love it</a>
-				<a class="btn btn-danger ml-1">Don't love it</a>
-			</div>
-		</li>
-	</ul>
+	<app-post-list-item
+		*ngFor="let post of posts"
+		[post]="post">
+	</app-post-list-item>
 </ul>
