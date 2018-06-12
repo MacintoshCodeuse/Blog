@@ -20,7 +20,7 @@ export class PostListItemComponent implements OnInit {
 		const id = this.post['id'];
 		const title = this.post['title'];
 		const content = this.post['content'];
-		const loveIts = this.post['loveIts'] + 1;
+		const loveIts = this.post['loveIts'];
 		const created_at = this.post['created_at'];
 		const post = new Post(id, title, content, loveIts, created_at);
 		this.postService.love(post);
@@ -30,7 +30,7 @@ export class PostListItemComponent implements OnInit {
 		const id = this.post['id'];
 		const title = this.post['title'];
 		const content = this.post['content'];
-		const loveIts = this.post['loveIts'] + 1;
+		const loveIts = this.post['loveIts'];
 		const created_at = this.post['created_at'];
 		const post = new Post(id, title, content, loveIts, created_at);
 		this.postService.dontLove(post);
