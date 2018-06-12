@@ -8,7 +8,13 @@
 		</div>
 
 		<p class="card-text">{{ post.content }}</p>
-		<a (click)="onLove()" class="btn btn-success">Love it</a>
-		<a (click)="onDontLove()" class="btn btn-danger ml-1">Don't love it</a>
+		<div class="d-flex justify-content-between">
+			<div>
+				<a (click)="onLove()" class="btn btn-success">Love it</a>
+				<a (click)="onDontLove()" class="btn btn-danger ml-1">Don't love it</a>
+			</div>
+				<a (click)="onDelete()" class="btn btn-danger ml-1">Supprimer</a>
+		</div>
+
 	</div>
 </li>

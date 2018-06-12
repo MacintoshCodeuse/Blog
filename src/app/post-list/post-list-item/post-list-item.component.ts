@@ -1,38 +1,42 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Post } from '../../models/Post.model';
-import { PostsService } from '../../services/postsService';
+import { Component, OnInit, Input } from "@angular/core";
+import { Post } from "../../models/Post.model";
+import { PostsService } from "../../services/postsService";
 
 @Component({
 	selector: "app-post-list-item",
 	templateUrl: "./post-list-item.component.html",
 	styleUrls: ["./post-list-item.component.css"]
 })
+
+// Article
 export class PostListItemComponent implements OnInit {
+	@Input() post: Post;
 
-	@Input() post: Post[];
+	constructor(private postService: PostsService) { }
 
-	constructor(private postService: PostsService) {}
+	ngOnInit() { }
 
-	ngOnInit() {
-	}
-
+	// Ajout d'un loveIts dans un article
 	onLove() {
-		const id = this.post['id'];
-		const title = this.post['title'];
-		const content = this.post['content'];
-		const loveIts = this.post['loveIts'];
-		const created_at = this.post['created_at'];
-		const post = new Post(id, title, content, loveIts, created_at);
+		// Création d'un objet Post
+		const post = this.postService.initPost(this.post);
+		// Utilisation de la fonction love de postService
 		this.postService.love(post);
 	}
 
+	// Supression d'un loveIts dans un article
 	onDontLove() {
-		const id = this.post['id'];
-		const title = this.post['title'];
-		const content = this.post['content'];
-		const loveIts = this.post['loveIts'];
-		const created_at = this.post['created_at'];
-		const post = new Post(id, title, content, loveIts, created_at);
+		// Création d'un objet Post
+		const post = this.postService.initPost(this.post);
+		// Utilisation de la fonction dontLove de postService
 		this.postService.dontLove(post);
+	}
+
+	// Supression d'un article
+	onDelete() {
+		// Création d'un objet Post
+		const post = this.postService.initPost(this.post);
+		// Utilisation de la fonction removePoste de postService
+		this.postService.removePost(post);
 	}
 }

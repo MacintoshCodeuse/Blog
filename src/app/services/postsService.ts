@@ -4,6 +4,7 @@ import { Post } from "../models/Post.model";
 
 @Injectable()
 export class PostsService {
+
 	// Création d'un tableau d'articles
 	private posts: Post[] = [
 		{
@@ -32,17 +33,18 @@ export class PostsService {
 		}
 	];
 
+	// Création d'un subject pour l'émission des articles
 	public postsSubject = new Subject<any[]>();
 
-	constructor() {}
+	constructor() { }
 
-	// Emission du subject des articles
+	// Emission des articles
 	emitPosts() {
 		this.postsSubject.next(this.posts);
 	}
 
 	// Récupération de l'index d'un article
-	postIndex(post: Post) {
+	private postIndex(post: Post) {
 		const postIndex = this.posts.findIndex(postEl => {
 			if (postEl["id"] === post["id"]) {
 				return true;
@@ -53,23 +55,53 @@ export class PostsService {
 
 	// Ajout d'un loveIts dans un article
 	love(post: Post) {
-		const postIndex = this.postIndex(post);
-		++this.posts[postIndex]["loveIts"];
+		// Récupération de l'index de l'article
+		const postIndexToUpdate = this.postIndex(post);
+		// Ajout d'un loveIts à l'article
+		++this.posts[postIndexToUpdate]["loveIts"];
+		// Emission des articles
 		this.emitPosts();
 	}
 
 	// Supression d'un loveIts dans un article
 	dontLove(post: Post) {
-		const postIndex = this.postIndex(post);
-		--this.posts[postIndex]["loveIts"];
+		// Récupération de l'index de l'article
+		const postIndexToUpdate = this.postIndex(post);
+		// Supression d'un loveIts à l'article
+		--this.posts[postIndexToUpdate]["loveIts"];
+		// Emission des articles
 		this.emitPosts();
+	}
+
+	// Création d'un objet Post
+	initPost(post: Post) {
+		const id = post["id"];
+		const title = post["title"];
+		const content = post["content"];
+		const loveIts = post["loveIts"];
+		const created_at = post["created_at"];
+		const initPost = new Post(id, title, content, loveIts, created_at);
+		return initPost;
 	}
 
 	// Création d'un nouvel article
 	createNewPost(newPost: Post) {
-		const counter = this.posts.length;
-		newPost['id'] = counter+1;
+		// Récupération de l'index de l'article
+		newPost["id"] = this.posts.length + 1;
+		// Ajout de l'article au tableau des articles
 		this.posts.push(newPost);
+		// Emission des articles
 		this.emitPosts();
 	}
+
+	// Supression d'un article
+	removePost(post: Post) {
+		// Récupération de l'index de l'article
+		const postIndexToRemove = this.postIndex(post);
+		// Supression de l'article au tableau des articles
+		this.posts.splice(postIndexToRemove, 1);
+		// Emission des articles
+		this.emitPosts();
+	}
+
 }

@@ -12,6 +12,8 @@ import { Post } from '../../models/Post.model';
 
 export class NewPostComponent implements OnInit {
 
+	postService: any;
+	// Formulaire par méthode réactive
 	postForm: FormGroup;
 
 	constructor(
@@ -24,22 +26,25 @@ export class NewPostComponent implements OnInit {
 		this.initForm();
 	}
 
+	// Initialisation du formulaire
 	initForm() {
+		// Champs title et content requis
 		this.postForm = this.formBuilder.group({
 			title: ["", Validators.required],
 			content: ["", Validators.required]
 		});
 	}
 
-	onSavePost() {
+	onSavePost(post: Post) {
 		const id = 0;
 		const title = this.postForm.get('title').value;
 		const content = this.postForm.get('content').value;
 		const loveIts = 0;
 		const created_at = new Date();
 		const newPost = new Post(id, title, content, loveIts, created_at);
+
 		this.postsService.createNewPost(newPost);
-		this.router.navigate(['/books']);
+		this.router.navigate(["/books"]);
 	}
 
 }
