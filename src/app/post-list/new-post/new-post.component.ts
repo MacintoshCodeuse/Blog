@@ -12,7 +12,6 @@ import { Post } from '../../models/Post.model';
 
 export class NewPostComponent implements OnInit {
 
-	postService: any;
 	// Formulaire par méthode réactive
 	postForm: FormGroup;
 
@@ -35,13 +34,14 @@ export class NewPostComponent implements OnInit {
 		});
 	}
 
+	// Création et sauvegarde d'un nouvel article
 	onSavePost(post: Post) {
-		const id = 0;
+		// Création d'un objet Post à partir des entrées du formulaire
 		const title = this.postForm.get('title').value;
 		const content = this.postForm.get('content').value;
 		const loveIts = 0;
 		const created_at = new Date();
-		const newPost = new Post(id, title, content, loveIts, created_at);
+		const newPost = new Post(title, content, loveIts, created_at);
 
 		this.postsService.createNewPost(newPost);
 		this.router.navigate(["/books"]);
