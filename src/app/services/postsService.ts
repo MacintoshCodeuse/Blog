@@ -1,37 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { Post } from "../models/Post.model";
+import * as firebase from "firebase";
+import DataSnapshot = firebase.database.DataSnapshot;
 
 @Injectable()
 export class PostsService {
-
 	// Création d'un tableau d'articles
-	private posts: Post[] = [
-		{
-			id: 1,
-			title: "Mon premier post",
-			content:
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras blandit nec mauris ut maximus. Maecenas ut enim accumsan, feugiat quam in, volutpat enim. Integer est orci, vehicula ut justo ac, ullamcorper molestie purus. Ut vestibulum nisl mi, in venenatis ante gravida vitae. Ut laoreet euismod facilisis. Mauris dapibus mauris eget mi fringilla, sed tempor nulla convallis. Sed in consectetur tellus. Fusce vitae posuere turpis. Nunc elementum malesuada porta. Duis lacus mauris, laoreet eget ligula at, posuere pretium erat. Phasellus lobortis sodales varius. Etiam at maximus elit. Sed ac ante vel ante mollis tristique. Sed dui dui, iaculis et fringilla sed, hendrerit vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-			loveIts: 0,
-			created_at: new Date()
-		},
-		{
-			id: 2,
-			title: "Mon deuxieme post",
-			content:
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras blandit nec mauris ut maximus. Maecenas ut enim accumsan, feugiat quam in, volutpat enim. Integer est orci, vehicula ut justo ac, ullamcorper molestie purus. Ut vestibulum nisl mi, in venenatis ante gravida vitae. Ut laoreet euismod facilisis. Mauris dapibus mauris eget mi fringilla, sed tempor nulla convallis. Sed in consectetur tellus. Fusce vitae posuere turpis. Nunc elementum malesuada porta. Duis lacus mauris, laoreet eget ligula at, posuere pretium erat. Phasellus lobortis sodales varius. Etiam at maximus elit. Sed ac ante vel ante mollis tristique. Sed dui dui, iaculis et fringilla sed, hendrerit vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-			loveIts: 5,
-			created_at: new Date()
-		},
-		{
-			id: 3,
-			title: "Mon troisième post",
-			content:
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras blandit nec mauris ut maximus. Maecenas ut enim accumsan, feugiat quam in, volutpat enim. Integer est orci, vehicula ut justo ac, ullamcorper molestie purus. Ut vestibulum nisl mi, in venenatis ante gravida vitae. Ut laoreet euismod facilisis. Mauris dapibus mauris eget mi fringilla, sed tempor nulla convallis. Sed in consectetur tellus. Fusce vitae posuere turpis. Nunc elementum malesuada porta. Duis lacus mauris, laoreet eget ligula at, posuere pretium erat. Phasellus lobortis sodales varius. Etiam at maximus elit. Sed ac ante vel ante mollis tristique. Sed dui dui, iaculis et fringilla sed, hendrerit vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-			loveIts: -5,
-			created_at: new Date()
-		}
-	];
+	private posts: Post[] = [];
 
 	// Création d'un subject pour l'émission des articles
 	public postsSubject = new Subject<any[]>();
@@ -59,6 +35,8 @@ export class PostsService {
 		const postIndexToUpdate = this.postIndex(post);
 		// Ajout d'un loveIts à l'article
 		++this.posts[postIndexToUpdate]["loveIts"];
+		// Sauvegarder le tableau des articles dans la base de données
+		this.savePosts();
 		// Emission des articles
 		this.emitPosts();
 	}
@@ -69,6 +47,8 @@ export class PostsService {
 		const postIndexToUpdate = this.postIndex(post);
 		// Supression d'un loveIts à l'article
 		--this.posts[postIndexToUpdate]["loveIts"];
+		// Sauvegarder le tableau des articles dans la base de données
+		this.savePosts();
 		// Emission des articles
 		this.emitPosts();
 	}
@@ -84,14 +64,30 @@ export class PostsService {
 		return initPost;
 	}
 
+	// Sauvegarder le tableau des articles dans la base de données
+	savePosts() {
+		firebase.database().ref('/posts').set(this.posts);
+	}
+
 	// Création d'un nouvel article
 	createNewPost(newPost: Post) {
 		// Récupération de l'index de l'article
 		newPost["id"] = this.posts.length + 1;
 		// Ajout de l'article au tableau des articles
 		this.posts.push(newPost);
+		// Sauvegarder le tableau des articles dans la base de données
+		this.savePosts();
 		// Emission des articles
 		this.emitPosts();
+	}
+
+	// Récupérer la liste des articles
+	getPosts() {
+		firebase.database().ref('/posts')
+			.on('value', (data: DataSnapshot) => {
+				this.posts = data.val() ? data.val() : [];
+				this.emitPosts();
+			});
 	}
 
 	// Supression d'un article
@@ -100,8 +96,9 @@ export class PostsService {
 		const postIndexToRemove = this.postIndex(post);
 		// Supression de l'article au tableau des articles
 		this.posts.splice(postIndexToRemove, 1);
+		// Sauvegarder le tableau des articles dans la base de données
+		this.savePosts();
 		// Emission des articles
 		this.emitPosts();
 	}
-
 }

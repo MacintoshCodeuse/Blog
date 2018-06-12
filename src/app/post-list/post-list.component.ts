@@ -28,6 +28,7 @@ export class PostListComponent implements OnInit {
 				this.posts = posts;
 			}
 		);
+		this.postsService.getPosts();
 		this.postsService.emitPosts();
 	}
 
