@@ -11,8 +11,8 @@ import { HeaderComponent } from './header/header.component';
 
 const appRoutes: Routes = [
 	{ path: 'posts', component: PostListComponent },
-	{ path: '', redirectTo: 'books', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'books' }
+	{ path: '', redirectTo: 'posts', pathMatch: 'full' },
+	{ path: '**', redirectTo: 'posts' }
 ];
 
 @NgModule({
